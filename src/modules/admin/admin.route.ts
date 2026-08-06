@@ -6,6 +6,8 @@ import { adminController } from "./admin.controller";
 const router=Router()
 //get all users for admin manage
 router.get("/users",auth(Role.ADMIN),adminController.getAllUsers)
+//admin stats
+router.get("/admin/stats",auth(Role.ADMIN),adminController.getAdminStats)
 //update user status for admni
 router.patch("/users/:id",auth(Role.ADMIN),adminController.updateUserStatus)
 //get all properties for admin

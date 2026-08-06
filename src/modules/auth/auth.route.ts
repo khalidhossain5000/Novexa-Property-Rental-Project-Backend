@@ -10,5 +10,5 @@ router.post("/login",authController.loginUser)
 //get me 
 router.get("/me",auth(Role.TENANT,Role.LANDLORD,Role.ADMIN),authController.getMe)
 //refresh token
-router.get("/refresh-token",authController.refreshUserToken)
+router.post("/refresh-token",authController.refreshUserToken)
 export const authRoutes=router

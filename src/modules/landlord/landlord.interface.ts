@@ -9,6 +9,7 @@ export interface IProperties{
     price:number;
     amenities:string;
     status:PropertyStatus;
+    thumbnailImage:string
 
 }
 
@@ -18,4 +19,5 @@ export interface IUpdateProperty{
     location?:string;
     price?:number;
     amenities?:string;
+      thumbnailImage?:string
 }

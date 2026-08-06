@@ -1,3 +1,4 @@
+import { PropertyStatus } from "../../../generated/prisma/enums";
 import { PropertiesWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import { IPropertyQuery } from "./properties.interface";
@@ -81,6 +82,7 @@ if(query.minPrice || query.maxPrice){
   const propertiesResult = await prisma.properties.findMany({
     where: {
       AND: andConditions,
+      status:PropertyStatus.AVAILABLE
     },
 
     include: {
@@ -90,6 +92,7 @@ if(query.minPrice || query.maxPrice){
           password: true,
         },
       },
+       reviews:true
     },
   });
   return propertiesResult;
@@ -104,7 +107,9 @@ const result=await prisma.properties.findUniqueOrThrow({
     category:true,
     user:{
       omit:{password:true}
-    }
+    },
+    rentalRequest:true,
+    reviews:true
   }
 })
 return result

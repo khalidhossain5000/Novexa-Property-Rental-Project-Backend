@@ -15,6 +15,32 @@ const result=await prisma.properties.create({
 })
 return result
 }
+//get curretn logged in landlord all properties that he added
+
+const getLandlordAllProperties=async(landLordId:string,isLandLord:boolean)=>{
+     if(!isLandLord) throw {statusCode:409 ,message:"Unauth access you dont have permission for this"}
+
+     const result=await prisma.properties.findMany({
+        where:{
+            user:{
+                id:landLordId
+            },
+            
+        },
+        include:{
+             category: true,
+      user: {
+        omit: {
+          password: true,
+        },
+      },
+      reviews:true
+        }
+     })
+     return result
+}
+
+
 
 //get all rental request for landlord management
 const getAllRentalRequestFromDb=async(landLordId:string,isLandLord:boolean)=>{
@@ -103,10 +129,71 @@ const result=await prisma.properties.delete({
 return result
 }
 
+
+//landlod dashboard stats
+
+// get landlord dashboard stats — total rent requests, active rent, total earnings, total properties
+const getLandlordDashboardStatsFromDb = async (landLordId: string) => {
+  const [totalRentReq, totalActiveRent, totalEarnAgg, totalPropertiesAdded] =
+    await prisma.$transaction([
+      // total rental requests received (all statuses combined)
+      prisma.rentalRequest.count({
+        where: {
+          property: {
+            landLordId,
+          },
+        },
+      }),
+
+      // total currently active rents
+      prisma.rentalRequest.count({
+        where: {
+          property: {
+            landLordId,
+          },
+          status: "ACTIVE",
+        },
+      }),
+
+      // total earnings — sum of completed payments for this landlord's properties
+      prisma.payment.aggregate({
+        where: {
+          status: "COMPLETED",
+          rentalRequest: {
+            property: {
+              landLordId,
+            },
+          },
+        },
+        _sum: {
+          totalAmount: true,
+        },
+      }),
+
+      // total properties added by this landlord
+      prisma.properties.count({
+        where: {
+          landLordId,
+        },
+      }),
+    ]);
+
+  const result = {
+    totalRentReq,
+    totalActiveRent,
+    totalEarn: totalEarnAgg._sum.totalAmount || 0,
+    totalPropertiesAdded,
+  };
+
+  return result;
+};
+
 export const propertiesServices={
 createPropertiesInDb,
 updatePropertyInDb,
 deletePropertyInDb,
 getAllRentalRequestFromDb,
-updateRentalReqStatusInDb
+updateRentalReqStatusInDb,
+getLandlordAllProperties,
+getLandlordDashboardStatsFromDb
 }

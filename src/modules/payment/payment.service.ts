@@ -178,7 +178,12 @@ const paymentHistoryFromDb = async (tenantId: string) => {
       },
     },
     include: {
-      rentalRequest: true,
+      rentalRequest: {
+        include:{
+          property:true
+        }
+      },
+
     },
   });
   console.log(result,'this is result')

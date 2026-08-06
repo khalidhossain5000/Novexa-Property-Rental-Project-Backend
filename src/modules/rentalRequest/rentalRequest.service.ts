@@ -54,7 +54,24 @@ const getCurrentUserAllRentalRequestFromDb = async (tenantId: string) => {
       tenantId,
     },
     include: {
-      property: true,
+      property: {
+        include: {
+          user: {
+            omit: {
+              password: true,
+            },
+          },
+          reviews:{
+            include:{
+              tenant:{
+                omit:{
+                  password:true
+                }
+              }
+            }
+          }
+        },
+      },
       tenant: {
         omit: {
           password: true,
@@ -83,8 +100,44 @@ const getRentalRequestDetailsFromDb = async (requestId: string) => {
   return result;
 };
 
+// tenant dashboard stats — total sent, pending, rejected, active rent count
+const getTenantDashboardStatsFromDb = async (tenantId: string) => {
+  const grouped = await prisma.rentalRequest.groupBy({
+    by: ["status"],
+    where: {
+      tenantId,
+    },
+    _count: {
+      status: true,
+    },
+  });
+
+  const statusCountMap = grouped.reduce(
+    (acc, curr) => {
+      acc[curr.status] = curr._count.status;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const totalRequestSent = grouped.reduce(
+    (sum, curr) => sum + curr._count.status,
+    0,
+  );
+
+  const result = {
+    totalRequestSent,
+    pendingRequest: statusCountMap["PENDING"] || 0,
+    rejectedRequest: statusCountMap["REJECTED"] || 0,
+    activeRent: statusCountMap["ACTIVE"] || 0,
+  };
+
+  return result;
+};
+
 export const rentalRequestServices = {
   createRentalRequestInDb,
   getCurrentUserAllRentalRequestFromDb,
   getRentalRequestDetailsFromDb,
+  getTenantDashboardStatsFromDb,
 };

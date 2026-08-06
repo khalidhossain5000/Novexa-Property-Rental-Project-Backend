@@ -8,7 +8,7 @@ const createReviews=catchAsync(
 
 const payload=req.body
 const tenantId=req.user?.id
-console.log(payload,'this is payload')
+
 
 const result=await reviewsServices.createReviewsInDb(payload,tenantId as string)
 

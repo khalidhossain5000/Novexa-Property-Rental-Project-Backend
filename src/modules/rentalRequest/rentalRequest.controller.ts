@@ -59,8 +59,28 @@ const getRentalRequestDetails = catchAsync(
   },
 );
 
+
+
+//get tenatn dashboard stats
+const getTenantDashboardStats = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params?.id;
+    const result = await rentalRequestServices.getTenantDashboardStatsFromDb(
+      id as string,
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Tenant Dashboards stats retrived successfull",
+      data: result,
+    });
+  },
+);
+
 export const rentalRequestController = {
   createRentalRequest,
   getCurrentUsersRentalRequest,
   getRentalRequestDetails,
+  getTenantDashboardStats
 };

@@ -8,6 +8,8 @@ const router=Router()
 router.post("/",auth(Role.TENANT),rentalRequestController.createRentalRequest)
 //get current login user all rental request
 router.get("/",auth(Role.TENANT),rentalRequestController.getCurrentUsersRentalRequest)
+//tenant dashbaord stats
+router.get("/tenant/dashboard/stats",auth(Role.TENANT),rentalRequestController.getTenantDashboardStats)
 //get rental request details
 router.get("/:id",auth(Role.TENANT),rentalRequestController.getRentalRequestDetails)
 export const rentalRequestRoutes=router

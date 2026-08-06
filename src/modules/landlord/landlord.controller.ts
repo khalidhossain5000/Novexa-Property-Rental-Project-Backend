@@ -19,6 +19,26 @@ const createProperties=catchAsync(async(req:Request,res:Response,next:NextFuncti
     });
 
 })
+//get all properties added by current landlord
+
+const getCurrentLandlordProperties=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+
+  const landLordId=req.user?.id
+const role=req.user?.role
+
+const isLandLord=role===Role.LANDLORD
+
+    const result=await propertiesServices.getLandlordAllProperties(landLordId as string,isLandLord)
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: "Your all properties retrived successfully that u added",
+      data: result,
+    });
+
+})
+
+
 
 //get all rental request for landlord
 const getAllRentalRequest=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
@@ -88,7 +108,22 @@ const deleteProperty=catchAsync(async(req:Request,res:Response,next:NextFunction
 })
 
 
+//dashboard stats
 
+const getLandlordDashboardStats=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+
+    
+    const landLordId=req.user?.id
+   
+    const result=await propertiesServices.getLandlordDashboardStatsFromDb(landLordId as string)
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Landlord stats retirvied sucesfull",
+      data: result,
+    });
+
+})
 
 
 
@@ -99,5 +134,7 @@ export const propertyController={
     updateProperties,
     deleteProperty,
     getAllRentalRequest,
-    updateRentalReqStatus
+    updateRentalReqStatus,
+    getCurrentLandlordProperties,
+    getLandlordDashboardStats
 }

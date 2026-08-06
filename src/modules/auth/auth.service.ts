@@ -15,11 +15,11 @@ const createUserInDb = async (payload: IUser) => {
   });
 
   if (user)
-     throw {
-  statusCode: 409,
-  name: "ConflictError",
-  message: "User Already Exist ,Please Login",
-};
+    throw {
+      statusCode: 409,
+      name: "ConflictError",
+      message: "User Already Exist ,Please Login",
+    };
 
   //s-2 hash passowrd
 
@@ -54,12 +54,11 @@ const loginUserInDb = async (email: string, password: string) => {
   });
 
   if (!user)
-   
-  throw {
-  statusCode: httpStatus.NOT_FOUND,
-  name: "Not Found Error",
-   message: "User Not Found, Register First",
-};
+    throw {
+      statusCode: httpStatus.NOT_FOUND,
+      name: "Not Found Error",
+      message: "User Not Found, Register First",
+    };
   //s-2 user exist now check the password
 
   const isValidPassword = await bcrypt.compare(password, user.password);
@@ -67,14 +66,14 @@ const loginUserInDb = async (email: string, password: string) => {
   if (!isValidPassword)
     throw {
       statusCode: httpStatus.UNAUTHORIZED,
-        name: "Unauthorized",
+      name: "Unauthorized",
       message: "Invalid Password Try Again",
     };
 
   //s-3 now user all info are correct generate token
 
   const jwtPayload = {
-    userId:user.id,
+    userId: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -98,27 +97,14 @@ const loginUserInDb = async (email: string, password: string) => {
   return { accessToken, refreshToken };
 };
 
-
 //get me from db
-const getCurrentUserFromDb=async(id:string)=>{
-    
-const currentUser=await prisma.user.findUniqueOrThrow({
-    where:{id},
-    omit:{password:true}
-})
-return currentUser
-}
-
-
-
-
-
-
-
-
-
-
-
+const getCurrentUserFromDb = async (id: string) => {
+  const currentUser = await prisma.user.findUniqueOrThrow({
+    where: { id },
+    omit: { password: true },
+  });
+  return currentUser;
+};
 
 //refresh token
 

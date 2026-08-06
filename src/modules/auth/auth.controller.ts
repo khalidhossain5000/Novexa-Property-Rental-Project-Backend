@@ -63,7 +63,7 @@ const getMe=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
       sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: "User Login Successfull",
+      message: "Current User Data Retrived Successfull",
       data: result,
     });
 })

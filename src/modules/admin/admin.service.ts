@@ -47,6 +47,7 @@ const getAllRentalRequestFromDb=async()=>{
 const result=await prisma.rentalRequest.findMany({
     include:{
         property:true,
+        
         tenant:{
             omit:{
                 password:true
@@ -56,9 +57,46 @@ const result=await prisma.rentalRequest.findMany({
 })
 return result
 }
+
+
+
+const getAdminDashboardStatsFromDb = async () => {
+  const [
+    totalUsersCount,
+    totalPropertiesCount,
+    totalRentalRequestCount,
+    activePropertyCount,
+  ] = await prisma.$transaction([
+    // total users — regardless of role/status
+    prisma.user.count(),
+
+    // total properties — regardless of status
+    prisma.properties.count(),
+
+    // total rental requests — regardless of status
+    prisma.rentalRequest.count(),
+
+    // active/available properties only
+    prisma.properties.count({
+      where: {
+        status: "AVAILABLE",
+      },
+    }),
+  ]);
+
+  const result = {
+    totalUsersCount,
+    totalPropertiesCount,
+    totalRentalRequestCount,
+    activePropertyCount,
+  };
+
+  return result;
+};
 export const adminServices={
     getAllUsersFromDb,
     updateUserStatus,
     getAllPropertiesFromDb,
-    getAllRentalRequestFromDb
+    getAllRentalRequestFromDb,
+    getAdminDashboardStatsFromDb
 }

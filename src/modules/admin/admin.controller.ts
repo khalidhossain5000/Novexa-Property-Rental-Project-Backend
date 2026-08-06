@@ -22,9 +22,9 @@ const updateUserStatus=catchAsync(async(req:Request,res:Response,next:NextFuncti
    const userId=req.params?.id
    const result=await adminServices.updateUserStatus(status,userId as string)
     sendResponse(res, {
-      statusCode: httpStatus.CREATED,
+      statusCode: httpStatus.OK,
       success: true,
-      message: "All Rental Request For Your Properteis retirved successfull",
+      message: "User Status updated successfull",
       data: result,
     });
 
@@ -54,10 +54,21 @@ const getAllRentalRequest=catchAsync(async(req:Request,res:Response,next:NextFun
 
 })
 
+//get all properties for admin manage
+const getAdminStats=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+   const result=await adminServices.getAdminDashboardStatsFromDb()
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Admin dashboard stats",
+      data: result,
+    });
 
+})
 export const adminController={
     getAllUsers,
     updateUserStatus,
     getAllProperties,
-    getAllRentalRequest
+    getAllRentalRequest,
+    getAdminStats
 }

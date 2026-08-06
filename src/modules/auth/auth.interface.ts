@@ -5,5 +5,6 @@ export interface IUser{
     email:string,
     password:string,
     role:Role,
-    status:UserStatus
+    status:UserStatus,
+    profileImage?:string
 }

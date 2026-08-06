@@ -4,6 +4,7 @@ model User {
     lastName String @db.VarChar(200)
     email String @db.VarChar(300) @unique
     password String @db.VarChar(500)
+    profilePhoto String @db.VarChar(500) @default("https://i.ibb.co.com/MxG3yzrq/fb.jpg")
     role Role @default(TENANT)
     status UserStatus @default(ACTIVE)
 

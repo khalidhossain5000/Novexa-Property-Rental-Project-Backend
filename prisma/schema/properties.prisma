@@ -5,6 +5,8 @@ model Properties{
     location String @db.VarChar(100)
     price Decimal @db.Decimal(10,2)
     amenities String @db.Text
+    //thumbnail image
+    thumbnailImage String @db.Text
     status PropertyStatus @default(AVAILABLE)
     //cateogiry id relation to category table storing property category
     categoryId String
