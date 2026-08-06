@@ -69,6 +69,20 @@ const getMe=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
 })
 
 
+const updateUser=catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
+   const id=req.user?.id as string
+   const payload=req.body
+   console.log(payload,'this is payload')
+    const result=await authServices.updateUserProfile(id as string,payload)
+      sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User profile updated successfulll",
+      data: result,
+    });
+})
+
+
 
 
 
@@ -98,5 +112,6 @@ export const authController = {
   registerUser,
   loginUser,
   refreshUserToken,
-  getMe
+  getMe,
+  updateUser
 };

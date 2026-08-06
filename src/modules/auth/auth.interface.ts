@@ -8,3 +8,13 @@ export interface IUser{
     status:UserStatus,
     profileImage?:string
 }
+
+
+export interface IUpdateUser{
+    firstName:string;
+    lastName:string;
+    profilePhoto:string;
+}
+
+
+

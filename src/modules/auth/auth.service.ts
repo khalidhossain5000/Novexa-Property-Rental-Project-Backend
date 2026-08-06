@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
-import { IUser } from "./auth.interface";
+import { IUpdateUser, IUser } from "./auth.interface";
 import httpStatus from "http-status";
 import configuration from "../../config";
 import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
@@ -106,6 +106,26 @@ const getCurrentUserFromDb = async (id: string) => {
   return currentUser;
 };
 
+//update user profile
+const updateUserProfile=async(id:string,payload:IUpdateUser)=>{
+const result=await prisma.user.update({
+  where:{
+    id
+  },
+  data:{
+    firstName:payload.firstName,
+    lastName:payload.lastName,
+    profilePhoto:payload.profilePhoto
+  },
+  
+})
+return result
+}
+
+
+
+
+
 //refresh token
 
 const refreshToken = async (token: string) => {
@@ -149,4 +169,5 @@ export const authServices = {
   loginUserInDb,
   getCurrentUserFromDb,
   refreshToken,
+  updateUserProfile
 };

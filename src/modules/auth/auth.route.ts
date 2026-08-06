@@ -9,6 +9,8 @@ router.post("/register",authController.registerUser)
 router.post("/login",authController.loginUser)
 //get me 
 router.get("/me",auth(Role.TENANT,Role.LANDLORD,Role.ADMIN),authController.getMe)
+//update 
+router.put("/update-profile",auth(Role.ADMIN,Role.LANDLORD,Role.TENANT),authController.updateUser)
 //refresh token
 router.post("/refresh-token",authController.refreshUserToken)
 export const authRoutes=router
