@@ -167,7 +167,6 @@ PENDING → APPROVED → PAYMENT → ACTIVE → COMPLETED
 - Role-based access control enforced via middleware: `auth(Role.TENANT | Role.LANDLORD | Role.ADMIN)`
 - Each route only accepts requests from the role(s) explicitly permitted
 
-- Each route only accepts requests from the role(s) explicitly permitted
 
 
 ---
