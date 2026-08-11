@@ -165,8 +165,6 @@ PENDING → APPROVED → PAYMENT → ACTIVE → COMPLETED
 
 - JWT-based authentication; token required for all protected routes
 - Role-based access control enforced via middleware: `auth(Role.TENANT | Role.LANDLORD | Role.ADMIN)`
-- Each route only accepts requests from the role(s) explicitly permitted
-
 
 
 ---
