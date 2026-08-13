@@ -2,7 +2,7 @@
 
 **Find & List Rental Properties with Ease**
 
-RentNest is a backend REST API for a rental property marketplace. Landlords can list properties, manage availability, and approve or reject rental requests. Tenants can browse listings, submit rental requests, make payments, and leave reviews. Admins oversee the entire platform, managing users, manage property category and moderating content.
+RentNest is a backend REST API for a rental property marketplace. Landlords can list properties, manage availability, and approve or reject rental requests. Tenants can browse listings, submit rental requests, make payments, and leave reviews. Admins oversee the entire platform, managing users, manage property categories and moderating content.
 
 ---
 
