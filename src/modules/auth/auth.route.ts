@@ -12,4 +12,6 @@ router.get("/me",auth(Role.TENANT,Role.LANDLORD,Role.ADMIN),authController.getMe
 
 //refresh token
 router.post("/refresh-token",authController.refreshUserToken)
+
+router.put("/update-profile",auth(Role.TENANT,Role.LANDLORD,Role.ADMIN),authController.updateUser)
 export const authRoutes=router
